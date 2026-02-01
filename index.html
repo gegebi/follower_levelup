@@ -35,6 +35,181 @@
         .glow-6 { filter: drop-shadow(0 0 20px #cc00cc); } 
         .glow-7 { filter: drop-shadow(0 0 25px #ff0000); } 
 
+        /* Follower Level Colors */
+        .level-0 #person-body,
+        .level-0 #person-head {
+            fill: #f0f0f0;
+            stroke: #c8c8c8;
+        }
+
+        .level-1 #person-body,
+        .level-1 #person-head {
+            fill: #e9e9e9;
+            stroke: #c1c1c1;
+        }
+
+        .level-2 #person-body,
+        .level-2 #person-head {
+            fill: #e2e2e2;
+            stroke: #bababa;
+        }
+
+        .level-3 #person-body,
+        .level-3 #person-head {
+            fill: #dbdbdb;
+            stroke: #b3b3b3;
+        }
+
+        .level-4 #person-body,
+        .level-4 #person-head {
+            fill: #d4d4d4;
+            stroke: #acacac;
+        }
+
+        .level-5 #person-body,
+        .level-5 #person-head {
+            fill: #cdcdcd;
+            stroke: #a5a5a5;
+        }
+
+        .level-6 #person-body,
+        .level-6 #person-head {
+            fill: #c6c6c6;
+            stroke: #9e9e9e;
+        }
+
+        .level-7 #person-body,
+        .level-7 #person-head {
+            fill: #bfbfbf;
+            stroke: #979797;
+        }
+
+        .level-8 #person-body,
+        .level-8 #person-head {
+            fill: #b8b8b8;
+            stroke: #909090;
+        }
+
+        .level-9 #person-body,
+        .level-9 #person-head {
+            fill: #b1b1b1;
+            stroke: #898989;
+        }
+
+        .level-10 #person-body,
+        .level-10 #person-head {
+            fill: #aaaaaa;
+            stroke: #828282;
+        }
+
+        .level-11 #person-body,
+        .level-11 #person-head {
+            fill: #a3a3a3;
+            stroke: #7b7b7b;
+        }
+
+        .level-12 #person-body,
+        .level-12 #person-head {
+            fill: #9c9c9c;
+            stroke: #747474;
+        }
+
+        .level-13 #person-body,
+        .level-13 #person-head {
+            fill: #959595;
+            stroke: #6d6d6d;
+        }
+
+        .level-14 #person-body,
+        .level-14 #person-head {
+            fill: #8e8e8e;
+            stroke: #666666;
+        }
+
+        .level-15 #person-body,
+        .level-15 #person-head {
+            fill: #878787;
+            stroke: #5f5f5f;
+        }
+
+        .level-16 #person-body,
+        .level-16 #person-head {
+            fill: #808080;
+            stroke: #585858;
+        }
+
+        .level-17 #person-body,
+        .level-17 #person-head {
+            fill: #797979;
+            stroke: #515151;
+        }
+
+        .level-18 #person-body,
+        .level-18 #person-head {
+            fill: #727272;
+            stroke: #4a4a4a;
+        }
+
+        .level-19 #person-body,
+        .level-19 #person-head {
+            fill: #6b6b6b;
+            stroke: #434343;
+        }
+
+        .level-20 #person-body,
+        .level-20 #person-head {
+            fill: #646464;
+            stroke: #3c3c3c;
+        }
+
+        .level-21 #person-body,
+        .level-21 #person-head {
+            fill: #5d5d5d;
+            stroke: #353535;
+        }
+
+        .level-22 #person-body,
+        .level-22 #person-head {
+            fill: #565656;
+            stroke: #2e2e2e;
+        }
+
+        .level-23 #person-body,
+        .level-23 #person-head {
+            fill: #4f4f4f;
+            stroke: #272727;
+        }
+
+        .level-24 #person-body,
+        .level-24 #person-head {
+            fill: #484848;
+            stroke: #202020;
+        }
+
+        .level-25 #person-body,
+        .level-25 #person-head {
+            fill: #414141;
+            stroke: #191919;
+        }
+
+        .level-26 #person-body,
+        .level-26 #person-head {
+            fill: #3a3a3a;
+            stroke: #121212;
+        }
+
+        .level-27 #person-body,
+        .level-27 #person-head {
+            fill: #333333;
+            stroke: #0b0b0b;
+        }
+
+        .level-28 #person-body,
+        .level-28 #person-head {
+            fill: #303030;
+            stroke: #080808;
+        }
+        
         /* Animations */
         @keyframes shake {
             0% { transform: translate(1px, 1px) rotate(0deg); }
@@ -150,7 +325,7 @@
                     <!-- Body -->
                     <path id="person-body" d="M50 42 C30 42 15 55 15 75 L85 75 C85 55 70 42 50 42 Z" fill="#cccccc" stroke="#555" stroke-width="1"/>
                     <!-- Head -->
-                    <circle id="person-head" cx="50" cy="25" r="15" fill="#333" stroke="#222" stroke-width="2"/>
+                    <circle id="person-head" cx="50" cy="25" r="15" fill="#cccccc" stroke="#555" stroke-width="1"/>
                 </svg>
                 
                 <!-- Enhancement Level Text -->
@@ -266,9 +441,9 @@
             { name: "지환", tier: 0, success: 0.98, break: 0, drop: 0, costMult: 5, valMult: 5 }, // 1
             { name: "윤범", tier: 0, success: 0.95, break: 0, drop: 0, costMult: 10, valMult: 10 }, // 2
             { name: "지호", tier: 0, success: 0.92, break: 0, drop: 0.1, costMult: 50, valMult: 50 }, // 3
-            { name: "황시우", tier: 1, success: 0.90, break: 0, drop: 0.2, costMult: 100, valMult: 100 }, // 4
-            { name: "지연", tier: 1, success: 0.88, break: 0, drop: 0.25, costMult: 500, valMult: 500 }, // 5
-            { name: "정우용", tier: 1, success: 0.85, break: 0, drop: 0.3, costMult: 1000, valMult: 1000 }, // 6
+            { name: "황시우 샤갈", tier: 1, success: 0.90, break: 0, drop: 0.2, costMult: 100, valMult: 100 }, // 4
+            { name: "지연슨", tier: 1, success: 0.88, break: 0, drop: 0.25, costMult: 500, valMult: 500 }, // 5
+            { name: "우용", tier: 1, success: 0.85, break: 0, drop: 0.3, costMult: 1000, valMult: 1000 }, // 6
             { name: "추구미 아카이브", tier: 2, success: 0.80, break: 0, drop: 0.4, costMult: 10000, valMult: 10000 }, // 7
             { name: "민지한", tier: 2, success: 0.75, break: 0.05, drop: 0.5, costMult: 50000, valMult: 50000 }, // 8
             { name: "김영광", tier: 2, success: 0.70, break: 0.1, drop: 0.5, costMult: 100000, valMult: 100000 }, // 9
@@ -515,28 +690,7 @@
             }
 
             // Visual Updates
-            el.personSvg.className = `w-full h-full transition-all duration-500 glow-${cfg.tier}`;
-            
-            // Calculate grayscale color based on level
-            const maxLevelForColor = levelConfig.length - 1; // 0-indexed
-            const minColorVal = 48; // #303030
-            const maxColorVal = 240; // #f0f0f0
-            
-            let colorComponent = maxColorVal - (state.level / maxLevelForColor) * (maxColorVal - minColorVal);
-            colorComponent = Math.max(minColorVal, Math.min(maxColorVal, Math.round(colorComponent)));
-
-            const fillHex = `#${colorComponent.toString(16).padStart(2, '0').repeat(3)}`;
-
-            // Calculate a slightly darker stroke color for visibility
-            const strokeComponent = Math.max(0, colorComponent - 40);
-            const strokeHex = `#${strokeComponent.toString(16).padStart(2, '0').repeat(3)}`;
-            
-            el.personBody.setAttribute("fill", fillHex);
-            el.personHead.setAttribute("fill", fillHex);
-
-            el.personBody.setAttribute("stroke", strokeHex);
-            el.personHead.setAttribute("stroke", strokeHex);
-
+            el.personSvg.className = `w-full h-full transition-all duration-500 glow-${cfg.tier} level-${state.level}`;
 
             // Button state
             if (state.gold < getNextCost()) {
