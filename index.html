@@ -254,35 +254,35 @@
 
         // Level Definitions (Multiplier 10x per level step)
         const levelConfig = [
-            { name: "윤주", tier: 0, success: 1.0, break: 0, drop: 0, costMult: 1, valMult: 1 }, // 0
-            { name: "지환", tier: 0, success: 0.98, break: 0, drop: 0, costMult: 5, valMult: 5 }, // 1
-            { name: "윤범", tier: 0, success: 0.95, break: 0, drop: 0, costMult: 10, valMult: 10 }, // 2
+            { name: "지환", tier: 0, success: 1.0, break: 0, drop: 0, costMult: 1, valMult: 1 }, // 0
+            { name: "현우", tier: 0, success: 0.98, break: 0, drop: 0, costMult: 5, valMult: 5 }, // 1
+            { name: "스껄", tier: 0, success: 0.95, break: 0, drop: 0, costMult: 10, valMult: 10 }, // 2
             { name: "지호", tier: 0, success: 0.92, break: 0, drop: 0.1, costMult: 50, valMult: 50 }, // 3
-            { name: "황시우 샤갈", tier: 1, success: 0.90, break: 0, drop: 0.2, costMult: 100, valMult: 100 }, // 4
-            { name: "지연슨", tier: 1, success: 0.88, break: 0, drop: 0.25, costMult: 500, valMult: 500 }, // 5
-            { name: "우용", tier: 1, success: 0.85, break: 0, drop: 0.3, costMult: 1000, valMult: 1000 }, // 6
-            { name: "추구미 아카이브", tier: 2, success: 0.80, break: 0, drop: 0.4, costMult: 10000, valMult: 10000 }, // 7
-            { name: "민지한", tier: 2, success: 0.75, break: 0.05, drop: 0.5, costMult: 50000, valMult: 50000 }, // 8
-            { name: "김영광", tier: 2, success: 0.70, break: 0.1, drop: 0.5, costMult: 100000, valMult: 100000 }, // 9
-            { name: "중원", tier: 3, success: 0.60, break: 0.2, drop: 0.5, costMult: 1000000, valMult: 1000000 }, // 10
-            { name: "검열된 메세지님", tier: 3, success: 0.55, break: 0.25, drop: 0.5, costMult: 5000000, valMult: 5000000 }, // 11
-            { name: "구태영", tier: 4, success: 0.50, break: 0.3, drop: 0.5, costMult: 10000000, valMult: 10000000 }, // 12
-            { name: "김민재", tier: 4, success: 0.45, break: 0.35, drop: 0.5, costMult: 50000000, valMult: 50000000 }, // 13
-            { name: "김성종", tier: 5, success: 0.40, break: 0.4, drop: 0.5, costMult: 100000000, valMult: 100000000 }, // 14
-            { name: "김정웡", tier: 5, success: 0.35, break: 0.5, drop: 0.5, costMult: 1000000000, valMult: 1000000000 }, // 15
-            { name: "전예찬", tier: 6, success: 0.25, break: 0.6, drop: 0.4, costMult: 10000000000, valMult: 10000000000 }, // 16
-            { name: "최재훈", tier: 6, success: 0.15, break: 0.7, drop: 0.3, costMult: 100000000000, valMult: 100000000000 }, // 17
+            { name: "우용", tier: 1, success: 0.90, break: 0, drop: 0.2, costMult: 100, valMult: 100 }, // 4
+            { name: "컴공생의 IT 기록장", tier: 1, success: 0.88, break: 0, drop: 0.25, costMult: 500, valMult: 500 }, // 5
+            { name: "김정웡", tier: 1, success: 0.85, break: 0, drop: 0.3, costMult: 1000, valMult: 1000 }, // 6
+            { name: "민지한", tier: 2, success: 0.80, break: 0, drop: 0.4, costMult: 10000, valMult: 10000 }, // 7
+            { name: "김영광", tier: 2, success: 0.75, break: 0.05, drop: 0.5, costMult: 50000, valMult: 50000 }, // 8
+            { name: "김민재", tier: 2, success: 0.70, break: 0.1, drop: 0.5, costMult: 100000, valMult: 100000 }, // 9
+            { name: "황시우 샤갈", tier: 3, success: 0.60, break: 0.2, drop: 0.5, costMult: 1000000, valMult: 1000000 }, // 10
+            { name: "상원", tier: 3, success: 0.55, break: 0.25, drop: 0.5, costMult: 5000000, valMult: 5000000 }, // 11
+            { name: "서연", tier: 4, success: 0.50, break: 0.3, drop: 0.5, costMult: 10000000, valMult: 10000000 }, // 12
+            { name: "구태영", tier: 4, success: 0.45, break: 0.35, drop: 0.5, costMult: 50000000, valMult: 50000000 }, // 13
+            { name: "재용", tier: 5, success: 0.40, break: 0.4, drop: 0.5, costMult: 100000000, valMult: 100000000 }, // 14
+            { name: "전예찬", tier: 5, success: 0.35, break: 0.5, drop: 0.5, costMult: 1000000000, valMult: 1000000000 }, // 15
+            { name: "김성종", tier: 6, success: 0.25, break: 0.6, drop: 0.4, costMult: 10000000000, valMult: 10000000000 }, // 16
+            { name: "중원", tier: 6, success: 0.15, break: 0.7, drop: 0.3, costMult: 100000000000, valMult: 100000000000 }, // 17
             { name: "김가빈", tier: 7, success: 0.10, break: 0.8, drop: 0.2, costMult: 1000000000000, valMult: 1000000000000 }, // 18
-            { name: "김이안", tier: 7, success: 0.08, break: 0.85, drop: 0.15, costMult: 5000000000000, valMult: 5000000000000 }, // 19
-            { name: "정헌슨", tier: 7, success: 0.06, break: 0.9, drop: 0.1, costMult: 1e14, valMult: 1e14 }, // 20
-            { name: "컴공생의 IT 기록장", tier: 7, success: 0.05, break: 0.92, drop: 0.08, costMult: 5e14, valMult: 5e14 }, // 21
-            { name: "상원", tier: 7, success: 0.04, break: 0.93, drop: 0.07, costMult: 1e15, valMult: 1e15 }, // 22
-            { name: "스껄", tier: 7, success: 0.03, break: 0.94, drop: 0.06, costMult: 5e15, valMult: 5e15 }, // 23
-            { name: "재용", tier: 7, success: 0.02, break: 0.95, drop: 0.05, costMult: 1e16, valMult: 1e16 }, // 24
-            { name: "서연", tier: 7, success: 0.01, break: 0.96, drop: 0.04, costMult: 5e16, valMult: 5e16 }, // 25
-            { name: "지안", tier: 7, success: 0.008, break: 0.97, drop: 0.03, costMult: 1e17, valMult: 1e17 }, // 26
-            { name: "현석", tier: 7, success: 0.005, break: 0.98, drop: 0.02, costMult: 5e17, valMult: 5e17 }, // 27
-            { name: "현우", tier: 7, success: 0.001, break: 0.99, drop: 0.01, costMult: 1e18, valMult: 1e18 }, // 28
+            { name: "최재훈", tier: 7, success: 0.08, break: 0.85, drop: 0.15, costMult: 5000000000000, valMult: 5000000000000 }, // 19
+            { name: "윤범", tier: 7, success: 0.06, break: 0.9, drop: 0.1, costMult: 1e14, valMult: 1e14 }, // 20
+            { name: "김이안", tier: 7, success: 0.05, break: 0.92, drop: 0.08, costMult: 5e14, valMult: 5e14 }, // 21
+            { name: "검열된 메세지님", tier: 7, success: 0.04, break: 0.93, drop: 0.07, costMult: 1e15, valMult: 1e15 }, // 22
+            { name: "지안", tier: 7, success: 0.03, break: 0.94, drop: 0.06, costMult: 5e15, valMult: 5e15 }, // 23
+            { name: "정헌슨", tier: 7, success: 0.02, break: 0.95, drop: 0.05, costMult: 1e16, valMult: 1e16 }, // 24
+            { name: "지연슨", tier: 7, success: 0.01, break: 0.96, drop: 0.04, costMult: 5e16, valMult: 5e16 }, // 25
+            { name: "현석", tier: 7, success: 0.008, break: 0.97, drop: 0.03, costMult: 1e17, valMult: 1e17 }, // 26
+            { name: "추구미 아카이브", tier: 7, success: 0.005, break: 0.98, drop: 0.02, costMult: 5e17, valMult: 5e17 }, // 27
+            { name: "윤주", tier: 7, success: 0.001, break: 0.99, drop: 0.01, costMult: 1e18, valMult: 1e18 }, // 28
         ];
 
         const levelColors = Array.from({length: 29}, (_, i) => {
