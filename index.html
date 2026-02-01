@@ -145,18 +145,12 @@
 
             <!-- Sword Visual -->
             <div id="sword-container" class="relative w-48 h-80 transition-all duration-300 flex items-center justify-center">
-                <!-- SVG Sword -->
-                <svg id="sword-svg" viewBox="0 0 100 200" class="w-full h-full drop-shadow-lg glow-0 transition-all duration-500">
-                    <!-- Hilt -->
-                    <path d="M30 150 L70 150 L70 160 L60 160 L60 190 L40 190 L40 160 L30 160 Z" fill="#4a4a4a" stroke="#222" stroke-width="2"/>
-                    <!-- Guard -->
-                    <path d="M20 140 L80 140 L85 130 L90 140 L90 150 L10 150 L10 140 L15 130 L20 140" fill="#6a6a6a" stroke="#222" stroke-width="2"/>
-                    <!-- Jewel in Guard -->
-                    <circle cx="50" cy="145" r="5" fill="#333" id="sword-jewel"/>
-                    <!-- Blade -->
-                    <path d="M35 140 L35 30 L50 5 L65 30 L65 140 Z" fill="#cccccc" stroke="#555" stroke-width="1" id="sword-blade"/>
-                    <!-- Fuller -->
-                    <path d="M50 130 L50 40" stroke="#888" stroke-width="2" opacity="0.5"/>
+                <!-- SVG Person -->
+                <svg id="person-svg" viewBox="0 0 100 100" class="w-full h-full drop-shadow-lg glow-0 transition-all duration-500">
+                    <!-- Body -->
+                    <path id="person-body" d="M50 42 C30 42 15 55 15 75 L85 75 C85 55 70 42 50 42 Z" fill="#cccccc" stroke="#555" stroke-width="1"/>
+                    <!-- Head -->
+                    <circle id="person-head" cx="50" cy="25" r="15" fill="#333" stroke="#222" stroke-width="2"/>
                 </svg>
                 
                 <!-- Enhancement Level Text -->
@@ -299,17 +293,19 @@
             { name: "현우", tier: 7, success: 0.001, break: 0.99, drop: 0.01, costMult: 1e18, valMult: 1e18 }, // 28
         ];
 
-        // Visual Colors for tiers
+        // Visual Colors for tiers (Dynamic grayscale based on level)
+        /*
         const tierColors = [
-            { blade: "#cccccc", jewel: "#333" }, // Tier 0 (Iron)
-            { blade: "#cd7f32", jewel: "#8b4513" }, // Tier 1 (Bronze)
-            { blade: "#e0e0e0", jewel: "#4169e1" }, // Tier 2 (Silver)
-            { blade: "#ffd700", jewel: "#ff4500" }, // Tier 3 (Gold)
-            { blade: "#e5e4e2", jewel: "#00ced1" }, // Tier 4 (Platinum)
-            { blade: "#b9f2ff", jewel: "#1e90ff" }, // Tier 5 (Diamond)
-            { blade: "#ff00ff", jewel: "#9400d3" }, // Tier 6 (Mythic)
-            { blade: "#ff0000", jewel: "#ffD700" }, // Tier 7 (God)
+            { bodyFill: "#cccccc", headFill: "#333" }, // Tier 0 (Iron)
+            { bodyFill: "#cd7f32", headFill: "#8b4513" }, // Tier 1 (Bronze)
+            { bodyFill: "#e0e0e0", headFill: "#4169e1" }, // Tier 2 (Silver)
+            { bodyFill: "#ffd700", headFill: "#ff4500" }, // Tier 3 (Gold)
+            { bodyFill: "#e5e4e2", headFill: "#00ced1" }, // Tier 4 (Platinum)
+            { bodyFill: "#b9f2ff", headFill: "#1e90ff" }, // Tier 5 (Diamond)
+            { bodyFill: "#ff00ff", headFill: "#9400d3" }, // Tier 6 (Mythic)
+            { bodyFill: "#ff0000", headFill: "#ffD700" }, // Tier 7 (God)
         ];
+        */
 
         // Elements
         const el = {
@@ -327,9 +323,9 @@
             cost: document.getElementById('cost-display'),
             clickGold: document.getElementById('click-gold'),
             log: document.getElementById('game-log'),
-            swordSvg: document.getElementById('sword-svg'),
-            swordBlade: document.getElementById('sword-blade'),
-            swordJewel: document.getElementById('sword-jewel'),
+            personSvg: document.getElementById('person-svg'),
+            personBody: document.getElementById('person-body'),
+            personHead: document.getElementById('person-head'),
             mineBtn: document.getElementById('mine-btn'),
             enhanceBtn: document.getElementById('enhance-btn'),
             sellBtn: document.getElementById('sell-btn'),
@@ -519,10 +515,28 @@
             }
 
             // Visual Updates
-            el.swordSvg.className = `w-full h-full transition-all duration-500 glow-${cfg.tier}`;
-            const colors = tierColors[Math.min(cfg.tier, tierColors.length - 1)];
-            el.swordBlade.setAttribute("fill", colors.blade);
-            el.swordJewel.setAttribute("fill", colors.jewel);
+            el.personSvg.className = `w-full h-full transition-all duration-500 glow-${cfg.tier}`;
+            
+            // Calculate grayscale color based on level
+            const maxLevelForColor = levelConfig.length - 1; // 0-indexed
+            const minColorVal = 48; // #303030
+            const maxColorVal = 240; // #f0f0f0
+            
+            let colorComponent = maxColorVal - (state.level / maxLevelForColor) * (maxColorVal - minColorVal);
+            colorComponent = Math.max(minColorVal, Math.min(maxColorVal, Math.round(colorComponent)));
+
+            const fillHex = `#${colorComponent.toString(16).padStart(2, '0').repeat(3)}`;
+
+            // Calculate a slightly darker stroke color for visibility
+            const strokeComponent = Math.max(0, colorComponent - 40);
+            const strokeHex = `#${strokeComponent.toString(16).padStart(2, '0').repeat(3)}`;
+            
+            el.personBody.setAttribute("fill", fillHex);
+            el.personHead.setAttribute("fill", fillHex);
+
+            el.personBody.setAttribute("stroke", strokeHex);
+            el.personHead.setAttribute("stroke", strokeHex);
+
 
             // Button state
             if (state.gold < getNextCost()) {
