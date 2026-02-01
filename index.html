@@ -35,194 +35,11 @@
         .glow-6 { filter: drop-shadow(0 0 20px #cc00cc); } 
         .glow-7 { filter: drop-shadow(0 0 25px #ff0000); } 
 
-        /* Follower Level Colors */
-        .level-0 #person-body,
-        .level-0 #person-head {
-            fill: #f0f0f0;
-            stroke: #c8c8c8;
-        }
-
-        .level-1 #person-body,
-        .level-1 #person-head {
-            fill: #e9e9e9;
-            stroke: #c1c1c1;
-        }
-
-        .level-2 #person-body,
-        .level-2 #person-head {
-            fill: #e2e2e2;
-            stroke: #bababa;
-        }
-
-        .level-3 #person-body,
-        .level-3 #person-head {
-            fill: #dbdbdb;
-            stroke: #b3b3b3;
-        }
-
-        .level-4 #person-body,
-        .level-4 #person-head {
-            fill: #d4d4d4;
-            stroke: #acacac;
-        }
-
-        .level-5 #person-body,
-        .level-5 #person-head {
-            fill: #cdcdcd;
-            stroke: #a5a5a5;
-        }
-
-        .level-6 #person-body,
-        .level-6 #person-head {
-            fill: #c6c6c6;
-            stroke: #9e9e9e;
-        }
-
-        .level-7 #person-body,
-        .level-7 #person-head {
-            fill: #bfbfbf;
-            stroke: #979797;
-        }
-
-        .level-8 #person-body,
-        .level-8 #person-head {
-            fill: #b8b8b8;
-            stroke: #909090;
-        }
-
-        .level-9 #person-body,
-        .level-9 #person-head {
-            fill: #b1b1b1;
-            stroke: #898989;
-        }
-
-        .level-10 #person-body,
-        .level-10 #person-head {
-            fill: #aaaaaa;
-            stroke: #828282;
-        }
-
-        .level-11 #person-body,
-        .level-11 #person-head {
-            fill: #a3a3a3;
-            stroke: #7b7b7b;
-        }
-
-        .level-12 #person-body,
-        .level-12 #person-head {
-            fill: #9c9c9c;
-            stroke: #747474;
-        }
-
-        .level-13 #person-body,
-        .level-13 #person-head {
-            fill: #959595;
-            stroke: #6d6d6d;
-        }
-
-        .level-14 #person-body,
-        .level-14 #person-head {
-            fill: #8e8e8e;
-            stroke: #666666;
-        }
-
-        .level-15 #person-body,
-        .level-15 #person-head {
-            fill: #878787;
-            stroke: #5f5f5f;
-        }
-
-        .level-16 #person-body,
-        .level-16 #person-head {
-            fill: #808080;
-            stroke: #585858;
-        }
-
-        .level-17 #person-body,
-        .level-17 #person-head {
-            fill: #797979;
-            stroke: #515151;
-        }
-
-        .level-18 #person-body,
-        .level-18 #person-head {
-            fill: #727272;
-            stroke: #4a4a4a;
-        }
-
-        .level-19 #person-body,
-        .level-19 #person-head {
-            fill: #6b6b6b;
-            stroke: #434343;
-        }
-
-        .level-20 #person-body,
-        .level-20 #person-head {
-            fill: #646464;
-            stroke: #3c3c3c;
-        }
-
-        .level-21 #person-body,
-        .level-21 #person-head {
-            fill: #5d5d5d;
-            stroke: #353535;
-        }
-
-        .level-22 #person-body,
-        .level-22 #person-head {
-            fill: #565656;
-            stroke: #2e2e2e;
-        }
-
-        .level-23 #person-body,
-        .level-23 #person-head {
-            fill: #4f4f4f;
-            stroke: #272727;
-        }
-
-        .level-24 #person-body,
-        .level-24 #person-head {
-            fill: #484848;
-            stroke: #202020;
-        }
-
-        .level-25 #person-body,
-        .level-25 #person-head {
-            fill: #414141;
-            stroke: #191919;
-        }
-
-        .level-26 #person-body,
-        .level-26 #person-head {
-            fill: #3a3a3a;
-            stroke: #121212;
-        }
-
-        .level-27 #person-body,
-        .level-27 #person-head {
-            fill: #333333;
-            stroke: #0b0b0b;
-        }
-
-        .level-28 #person-body,
-        .level-28 #person-head {
-            fill: #303030;
-            stroke: #080808;
-        }
         
         /* Animations */
         @keyframes shake {
             0% { transform: translate(1px, 1px) rotate(0deg); }
             10% { transform: translate(-1px, -2px) rotate(-1deg); }
-            20% { transform: translate(-3px, 0px) rotate(1deg); }
-            30% { transform: translate(3px, 2px) rotate(0deg); }
-            40% { transform: translate(1px, -1px) rotate(1deg); }
-            50% { transform: translate(-1px, 2px) rotate(-1deg); }
-            60% { transform: translate(-3px, 1px) rotate(0deg); }
-            70% { transform: translate(3px, 1px) rotate(-1deg); }
-            80% { transform: translate(-1px, -1px) rotate(1deg); }
-            90% { transform: translate(1px, 2px) rotate(0deg); }
-            100% { transform: translate(1px, -2px) rotate(-1deg); }
         }
 
         .shake-anim {
@@ -468,19 +285,10 @@
             { name: "현우", tier: 7, success: 0.001, break: 0.99, drop: 0.01, costMult: 1e18, valMult: 1e18 }, // 28
         ];
 
-        // Visual Colors for tiers (Dynamic grayscale based on level)
-        /*
-        const tierColors = [
-            { bodyFill: "#cccccc", headFill: "#333" }, // Tier 0 (Iron)
-            { bodyFill: "#cd7f32", headFill: "#8b4513" }, // Tier 1 (Bronze)
-            { bodyFill: "#e0e0e0", headFill: "#4169e1" }, // Tier 2 (Silver)
-            { bodyFill: "#ffd700", headFill: "#ff4500" }, // Tier 3 (Gold)
-            { bodyFill: "#e5e4e2", headFill: "#00ced1" }, // Tier 4 (Platinum)
-            { bodyFill: "#b9f2ff", headFill: "#1e90ff" }, // Tier 5 (Diamond)
-            { bodyFill: "#ff00ff", headFill: "#9400d3" }, // Tier 6 (Mythic)
-            { bodyFill: "#ff0000", headFill: "#ffD700" }, // Tier 7 (God)
-        ];
-        */
+        const levelColors = Array.from({length: 29}, (_, i) => {
+            const hue = 240 + (i / 28) * (360 - 240); // Blue (240) to Red (360/0)
+            return `hsl(${hue}, 80%, 60%)`;
+        });
 
         // Elements
         const el = {
@@ -694,7 +502,10 @@
             }
 
             // Visual Updates
-            el.personSvg.className = `w-full h-full transition-all duration-500 glow-${cfg.tier} level-${state.level}`;
+            const color = levelColors[Math.min(state.level, levelColors.length - 1)];
+            el.personBody.style.fill = color;
+            el.personHead.style.fill = color;
+            el.personSvg.className = `w-full h-full transition-all duration-500 glow-${cfg.tier}`;
 
             // Button state
             if (state.gold < getNextCost()) {
