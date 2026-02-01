@@ -1,14 +1,700 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="ko" class="dark">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hello World</title>
-  <link href='/style.css' rel='stylesheet'>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>팔로워 레벨업</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;700;900&family=Do+Hyeon&display=swap');
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            overflow: hidden; /* Prevent scroll on effects */
+            font-weight: 700;
+        }
+
+        .title-font {
+            font-family: 'Do Hyeon', sans-serif;
+        }
+
+        /* Sword Glow Effects based on Tier */
+        /* Light mode needs stronger shadows/glows or different colors to be visible */
+        .glow-0 { filter: drop-shadow(0 0 5px #555); } 
+        .glow-1 { filter: drop-shadow(0 0 8px #cd7f32); }
+        .glow-2 { filter: drop-shadow(0 0 10px #a0a0a0); } /* Slightly darker silver for light mode visibility */
+        .glow-3 { filter: drop-shadow(0 0 12px #d4af37); } /* Darker gold */
+        .glow-4 { filter: drop-shadow(0 0 15px #b0b0b0); } /* Darker platinum */
+        .glow-5 { filter: drop-shadow(0 0 18px #50c0e0); } /* Darker diamond */
+        .glow-6 { filter: drop-shadow(0 0 20px #cc00cc); } 
+        .glow-7 { filter: drop-shadow(0 0 25px #ff0000); } 
+
+        /* Animations */
+        @keyframes shake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            10% { transform: translate(-1px, -2px) rotate(-1deg); }
+            20% { transform: translate(-3px, 0px) rotate(1deg); }
+            30% { transform: translate(3px, 2px) rotate(0deg); }
+            40% { transform: translate(1px, -1px) rotate(1deg); }
+            50% { transform: translate(-1px, 2px) rotate(-1deg); }
+            60% { transform: translate(-3px, 1px) rotate(0deg); }
+            70% { transform: translate(3px, 1px) rotate(-1deg); }
+            80% { transform: translate(-1px, -1px) rotate(1deg); }
+            90% { transform: translate(1px, 2px) rotate(0deg); }
+            100% { transform: translate(1px, -2px) rotate(-1deg); }
+        }
+
+        .shake-anim {
+            animation: shake 0.5s;
+        }
+
+        @keyframes pop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .pop-anim {
+            animation: pop 0.2s;
+        }
+
+        @keyframes floatUp {
+            0% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-30px); }
+        }
+
+        .floating-text {
+            position: absolute;
+            animation: floatUp 1s ease-out forwards;
+            pointer-events: none;
+            font-weight: 900;
+        }
+
+        .btn-press {
+            transition: transform 0.1s;
+        }
+        .btn-press:active {
+            transform: scale(0.95);
+        }
+
+        /* Particle styles */
+        .particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+        
+        /* Dark mode transitions */
+        .theme-transition, .theme-transition * {
+            transition-property: background-color, border-color, color, fill, stroke;
+            transition-duration: 300ms;
+        }
+    </style>
 </head>
-<body>
-  <h1>Hello, world!</h1>
-  <button onclick="console.log('hello');">Press me</button>
-  <script defer type="text/javascript" src="/main.js"></script>
+<body class="h-screen flex flex-col items-center justify-center relative select-none bg-gray-100 dark:bg-black text-gray-900 dark:text-[#e0e0e0] theme-transition">
+
+    <!-- Game Container -->
+    <div class="w-full max-w-md bg-white dark:bg-[#0a0a0a] rounded-xl shadow-2xl border border-gray-200 dark:border-gray-800 overflow-hidden flex flex-col h-[90vh] md:h-auto md:min-h-[800px]">
+        
+        <!-- Header -->
+        <div class="bg-gray-50 dark:bg-[#111] p-4 border-b border-gray-200 dark:border-gray-800 flex justify-between items-center z-10">
+            <div class="flex items-center gap-3">
+                <!-- Theme Toggle Button -->
+                <button id="theme-toggle" class="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-800 text-gray-600 dark:text-yellow-400 flex items-center justify-center hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors" title="테마 변경">
+                    <span id="theme-icon">☀️</span>
+                </button>
+                <div>
+                    <h1 class="text-xl title-font text-yellow-600 dark:text-yellow-400 tracking-wider">팔로워 레벨업</h1>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 font-bold">당신이 나올때 까지 찾아보세요</p>
+                </div>
+            </div>
+            <div class="text-right">
+                <div class="text-yellow-600 dark:text-yellow-400 font-bold flex items-center gap-1 justify-end">
+                    <span>🪙</span>
+                    <span id="gold-display">0</span>
+                </div>
+                <div class="text-xs text-gray-500 dark:text-gray-400 font-bold">최고 기록: +<span id="max-level-display">0</span>강</div>
+            </div>
+        </div>
+
+        <!-- Main Sword Display Area -->
+        <div class="flex-grow relative flex flex-col items-center justify-center bg-gradient-to-b from-gray-50 to-gray-200 dark:from-[#0a0a0a] dark:to-black p-6" id="main-area">
+            
+            <!-- Message Overlay -->
+            <div id="message-area" class="absolute top-10 left-0 right-0 text-center h-8 z-20"></div>
+
+            <!-- Sword Visual -->
+            <div id="sword-container" class="relative w-48 h-80 transition-all duration-300 flex items-center justify-center">
+                <!-- SVG Sword -->
+                <svg id="sword-svg" viewBox="0 0 100 200" class="w-full h-full drop-shadow-lg glow-0 transition-all duration-500">
+                    <!-- Hilt -->
+                    <path d="M30 150 L70 150 L70 160 L60 160 L60 190 L40 190 L40 160 L30 160 Z" fill="#4a4a4a" stroke="#222" stroke-width="2"/>
+                    <!-- Guard -->
+                    <path d="M20 140 L80 140 L85 130 L90 140 L90 150 L10 150 L10 140 L15 130 L20 140" fill="#6a6a6a" stroke="#222" stroke-width="2"/>
+                    <!-- Jewel in Guard -->
+                    <circle cx="50" cy="145" r="5" fill="#333" id="sword-jewel"/>
+                    <!-- Blade -->
+                    <path d="M35 140 L35 30 L50 5 L65 30 L65 140 Z" fill="#cccccc" stroke="#555" stroke-width="1" id="sword-blade"/>
+                    <!-- Fuller -->
+                    <path d="M50 130 L50 40" stroke="#888" stroke-width="2" opacity="0.5"/>
+                </svg>
+                
+                <!-- Enhancement Level Text -->
+                <div class="absolute bottom-0 bg-white/80 dark:bg-black/80 px-3 py-1 rounded-full border border-gray-300 dark:border-gray-700 backdrop-blur-sm">
+                    <span id="sword-name" class="text-sm text-gray-700 dark:text-gray-300 mr-1 font-bold">코초딩보</span>
+                    <span id="level-text" class="text-xl font-extrabold text-gray-900 dark:text-white">+0</span>
+                </div>
+            </div>
+
+            <!-- Stats Box -->
+            <div class="mt-6 bg-white/70 dark:bg-[#111]/90 rounded-lg p-3 w-full backdrop-blur border border-gray-300 dark:border-gray-800 text-sm font-bold shadow-sm">
+                <div class="flex justify-between mb-1">
+                    <span class="text-gray-600 dark:text-gray-400">공격력 (수익)</span>
+                    <span id="power-stat" class="text-green-600 dark:text-green-400 font-extrabold">10 Gold</span>
+                </div>
+                <div class="flex justify-between mb-1">
+                    <span class="text-gray-600 dark:text-gray-400">판매 가격</span>
+                    <span id="sell-price" class="text-yellow-600 dark:text-yellow-400 font-extrabold">5 Gold</span>
+                </div>
+                <div class="w-full h-px bg-gray-300 dark:bg-gray-600 my-2"></div>
+                <div class="flex justify-between items-center">
+                    <span class="text-gray-600 dark:text-gray-400">성공 확률</span>
+                    <span id="prob-success" class="text-blue-600 dark:text-blue-400 font-extrabold">100%</span>
+                </div>
+                <div class="flex justify-between items-center text-xs mt-1">
+                    <span class="text-gray-500 dark:text-gray-500">실패 시:</span>
+                    <span id="fail-penalty" class="text-red-500 dark:text-red-400 font-bold">페널티 없음</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="p-4 bg-gray-100 dark:bg-[#111] border-t border-gray-200 dark:border-gray-800">
+            
+            <!-- Mining Button -->
+            <button id="mine-btn" class="w-full mb-3 py-3 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 border border-gray-300 dark:border-gray-700 rounded-lg flex items-center justify-center gap-2 btn-press group shadow-sm">
+                <span class="text-2xl group-hover:rotate-12 transition-transform">⛏️</span>
+                <div class="text-left">
+                    <div class="font-extrabold text-gray-800 dark:text-gray-200">돈 벌기 (골드 획득)</div>
+                    <div class="text-xs text-gray-500 dark:text-gray-400 font-bold">클릭당 <span id="click-gold">10</span> 골드</div>
+                </div>
+            </button>
+
+            <div class="grid grid-cols-2 gap-3">
+                <!-- Sell Button -->
+                <button id="sell-btn" class="py-4 bg-red-100 hover:bg-red-200 dark:bg-red-950/40 dark:hover:bg-red-900/40 border border-red-200 dark:border-red-900 rounded-lg btn-press flex flex-col items-center justify-center">
+                    <span class="font-extrabold text-red-700 dark:text-red-200 text-sm">팔로워 판매하기</span>
+                    <span class="text-xs text-red-500 dark:text-red-300 mt-1 font-bold">초기화 및 보상</span>
+                </button>
+
+                <!-- Enhance Button -->
+                <button id="enhance-btn" class="py-4 bg-indigo-500 hover:bg-indigo-400 dark:bg-indigo-700 dark:hover:bg-indigo-600 border-b-4 border-indigo-700 hover:border-indigo-600 dark:border-indigo-900 dark:hover:border-indigo-800 rounded-lg btn-press flex flex-col items-center justify-center relative overflow-hidden text-white shadow-md">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                    <span class="font-extrabold text-lg z-10">강화하기</span>
+                    <span class="text-xs text-indigo-100 mt-1 z-10 font-bold">비용: <span id="cost-display">10</span> G</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Log Area -->
+        <div class="h-24 bg-gray-50 dark:bg-black p-2 overflow-y-auto text-xs font-mono border-t border-gray-200 dark:border-gray-800 font-bold" id="game-log">
+            <div class="text-gray-500">> 게임이 시작되었습니다.</div>
+        </div>
+    </div>
+
+    <!-- Modal for Destruction/Game Over -->
+    <div id="modal-overlay" class="hidden fixed inset-0 bg-black/50 dark:bg-black/80 z-50 flex items-center justify-center backdrop-blur-sm">
+        <div class="bg-white dark:bg-gray-800 border-2 border-red-500 rounded-xl p-6 max-w-sm w-full text-center shadow-[0_0_30px_rgba(239,68,68,0.3)]">
+            <div class="text-5xl mb-4">💥</div>
+            <h2 class="text-2xl font-black text-red-600 dark:text-red-500 mb-2 title-font">사람이 파괴되었습니다!</h2>
+            <p class="text-gray-700 dark:text-gray-300 mb-6 font-bold">욕심이 과했습니다...<br>팔로워가 산산조각 났습니다.</p>
+            <p class="text-sm text-red-500 dark:text-red-400 mb-6 font-black">파괴의 충격으로 모든 골드를 잃었습니다!</p>
+            <button id="restart-btn" class="w-full py-3 bg-red-600 hover:bg-red-500 text-white font-black rounded-lg transition-colors shadow-lg">
+                다시 시작하기 (거지)
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal for Sell Confirmation (NEW) -->
+    <div id="sell-modal-overlay" class="hidden fixed inset-0 bg-black/50 dark:bg-black/80 z-50 flex items-center justify-center backdrop-blur-sm">
+        <div class="bg-white dark:bg-gray-800 border-2 border-yellow-500 rounded-xl p-6 max-w-sm w-full text-center shadow-[0_0_30px_rgba(234,179,8,0.3)]">
+            <div class="text-5xl mb-4">💰</div>
+            <h2 class="text-2xl font-black text-yellow-600 dark:text-yellow-500 mb-2 title-font">팔로워 판매 확인</h2>
+            <p class="text-gray-700 dark:text-gray-300 mb-2 font-bold">정말 저의 소중한 팔로워를 파시겠습니까?</p>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mb-6 font-bold">판매 시 <span id="sell-confirm-price" class="text-yellow-600 dark:text-yellow-400 font-extrabold">0 G</span>를 획득하며,<br>팔로워는 +0 상태로 초기화됩니다.</p>
+            <div class="flex gap-3">
+                <button id="sell-cancel-btn" class="flex-1 py-3 bg-gray-200 hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-500 text-gray-800 dark:text-white font-black rounded-lg transition-colors">
+                    취소
+                </button>
+                <button id="sell-confirm-btn" class="flex-1 py-3 bg-yellow-500 hover:bg-yellow-400 dark:bg-yellow-600 dark:hover:bg-yellow-500 text-white font-black rounded-lg transition-colors shadow-md">
+                    판매하기
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Game State
+        const state = {
+            gold: 0,
+            level: 0,
+            maxLevel: 0,
+            currentCost: 0 // 현재 강화 비용 저장용
+        };
+
+        // Configuration
+        const BASE_SELL = 10;
+        const BASE_POWER = 1;
+
+        // Level Definitions (Multiplier 10x per level step)
+        const levelConfig = [
+            { name: "윤주", tier: 0, success: 1.0, break: 0, drop: 0, costMult: 1, valMult: 1 }, // 0
+            { name: "지환", tier: 0, success: 0.98, break: 0, drop: 0, costMult: 5, valMult: 5 }, // 1
+            { name: "윤범", tier: 0, success: 0.95, break: 0, drop: 0, costMult: 10, valMult: 10 }, // 2
+            { name: "지호", tier: 0, success: 0.92, break: 0, drop: 0.1, costMult: 50, valMult: 50 }, // 3
+            { name: "황시우", tier: 1, success: 0.90, break: 0, drop: 0.2, costMult: 100, valMult: 100 }, // 4
+            { name: "지연", tier: 1, success: 0.88, break: 0, drop: 0.25, costMult: 500, valMult: 500 }, // 5
+            { name: "정우용", tier: 1, success: 0.85, break: 0, drop: 0.3, costMult: 1000, valMult: 1000 }, // 6
+            { name: "추구미 아카이브", tier: 2, success: 0.80, break: 0, drop: 0.4, costMult: 10000, valMult: 10000 }, // 7
+            { name: "민지한", tier: 2, success: 0.75, break: 0.05, drop: 0.5, costMult: 50000, valMult: 50000 }, // 8
+            { name: "김영광", tier: 2, success: 0.70, break: 0.1, drop: 0.5, costMult: 100000, valMult: 100000 }, // 9
+            { name: "중원", tier: 3, success: 0.60, break: 0.2, drop: 0.5, costMult: 1000000, valMult: 1000000 }, // 10
+            { name: "검열된 메세지님", tier: 3, success: 0.55, break: 0.25, drop: 0.5, costMult: 5000000, valMult: 5000000 }, // 11
+            { name: "구태영", tier: 4, success: 0.50, break: 0.3, drop: 0.5, costMult: 10000000, valMult: 10000000 }, // 12
+            { name: "김민재", tier: 4, success: 0.45, break: 0.35, drop: 0.5, costMult: 50000000, valMult: 50000000 }, // 13
+            { name: "김성종", tier: 5, success: 0.40, break: 0.4, drop: 0.5, costMult: 100000000, valMult: 100000000 }, // 14
+            { name: "김정웡", tier: 5, success: 0.35, break: 0.5, drop: 0.5, costMult: 1000000000, valMult: 1000000000 }, // 15
+            { name: "전예찬", tier: 6, success: 0.25, break: 0.6, drop: 0.4, costMult: 10000000000, valMult: 10000000000 }, // 16
+            { name: "최재훈", tier: 6, success: 0.15, break: 0.7, drop: 0.3, costMult: 100000000000, valMult: 100000000000 }, // 17
+            { name: "김가빈", tier: 7, success: 0.10, break: 0.8, drop: 0.2, costMult: 1000000000000, valMult: 1000000000000 }, // 18
+            { name: "김이안", tier: 7, success: 0.08, break: 0.85, drop: 0.15, costMult: 5000000000000, valMult: 5000000000000 }, // 19
+            { name: "정헌슨", tier: 7, success: 0.06, break: 0.9, drop: 0.1, costMult: 1e14, valMult: 1e14 }, // 20
+            { name: "컴공생의 IT 기록장", tier: 7, success: 0.05, break: 0.92, drop: 0.08, costMult: 5e14, valMult: 5e14 }, // 21
+            { name: "상원", tier: 7, success: 0.04, break: 0.93, drop: 0.07, costMult: 1e15, valMult: 1e15 }, // 22
+            { name: "스껄", tier: 7, success: 0.03, break: 0.94, drop: 0.06, costMult: 5e15, valMult: 5e15 }, // 23
+            { name: "재용", tier: 7, success: 0.02, break: 0.95, drop: 0.05, costMult: 1e16, valMult: 1e16 }, // 24
+            { name: "서연", tier: 7, success: 0.01, break: 0.96, drop: 0.04, costMult: 5e16, valMult: 5e16 }, // 25
+            { name: "지안", tier: 7, success: 0.008, break: 0.97, drop: 0.03, costMult: 1e17, valMult: 1e17 }, // 26
+            { name: "현석", tier: 7, success: 0.005, break: 0.98, drop: 0.02, costMult: 5e17, valMult: 5e17 }, // 27
+            { name: "현우", tier: 7, success: 0.001, break: 0.99, drop: 0.01, costMult: 1e18, valMult: 1e18 }, // 28
+        ];
+
+        // Visual Colors for tiers
+        const tierColors = [
+            { blade: "#cccccc", jewel: "#333" }, // Tier 0 (Iron)
+            { blade: "#cd7f32", jewel: "#8b4513" }, // Tier 1 (Bronze)
+            { blade: "#e0e0e0", jewel: "#4169e1" }, // Tier 2 (Silver)
+            { blade: "#ffd700", jewel: "#ff4500" }, // Tier 3 (Gold)
+            { blade: "#e5e4e2", jewel: "#00ced1" }, // Tier 4 (Platinum)
+            { blade: "#b9f2ff", jewel: "#1e90ff" }, // Tier 5 (Diamond)
+            { blade: "#ff00ff", jewel: "#9400d3" }, // Tier 6 (Mythic)
+            { blade: "#ff0000", jewel: "#ffD700" }, // Tier 7 (God)
+        ];
+
+        // Elements
+        const el = {
+            html: document.documentElement,
+            themeToggle: document.getElementById('theme-toggle'),
+            themeIcon: document.getElementById('theme-icon'),
+            gold: document.getElementById('gold-display'),
+            maxLevel: document.getElementById('max-level-display'),
+            levelText: document.getElementById('level-text'),
+            swordName: document.getElementById('sword-name'),
+            power: document.getElementById('power-stat'),
+            sellPrice: document.getElementById('sell-price'),
+            probSuccess: document.getElementById('prob-success'),
+            failPenalty: document.getElementById('fail-penalty'),
+            cost: document.getElementById('cost-display'),
+            clickGold: document.getElementById('click-gold'),
+            log: document.getElementById('game-log'),
+            swordSvg: document.getElementById('sword-svg'),
+            swordBlade: document.getElementById('sword-blade'),
+            swordJewel: document.getElementById('sword-jewel'),
+            mineBtn: document.getElementById('mine-btn'),
+            enhanceBtn: document.getElementById('enhance-btn'),
+            sellBtn: document.getElementById('sell-btn'),
+            swordContainer: document.getElementById('sword-container'),
+            msgArea: document.getElementById('message-area'),
+            modal: document.getElementById('modal-overlay'),
+            restartBtn: document.getElementById('restart-btn'),
+            // New Elements for Sell Modal
+            sellModal: document.getElementById('sell-modal-overlay'),
+            sellConfirmBtn: document.getElementById('sell-confirm-btn'),
+            sellCancelBtn: document.getElementById('sell-cancel-btn'),
+            sellConfirmPrice: document.getElementById('sell-confirm-price')
+        };
+
+        // Theme Toggle Logic
+        el.themeToggle.addEventListener('click', () => {
+            if (el.html.classList.contains('dark')) {
+                el.html.classList.remove('dark');
+                el.themeIcon.textContent = '🌙'; // Switch to Moon (meaning "click to go dark")
+            } else {
+                el.html.classList.add('dark');
+                el.themeIcon.textContent = '☀️'; // Switch to Sun (meaning "click to go light")
+            }
+        });
+
+        // Audio Context (Synthesized sounds)
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        const audioCtx = new AudioContext();
+
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            
+            osc.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            
+            if (type === 'coin') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(1200, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(1800, audioCtx.currentTime + 0.1);
+                gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.1);
+            } else if (type === 'success') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+                osc.frequency.linearRampToValueAtTime(800, audioCtx.currentTime + 0.1);
+                osc.frequency.linearRampToValueAtTime(1200, audioCtx.currentTime + 0.2);
+                gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                gainNode.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.4);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.4);
+            } else if (type === 'fail') {
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(50, audioCtx.currentTime + 0.3);
+                gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.3);
+            } else if (type === 'break') {
+                osc.type = 'square';
+                osc.frequency.setValueAtTime(100, audioCtx.currentTime);
+                gainNode.gain.setValueAtTime(0.8, audioCtx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.5);
+            }
+        }
+
+        // --- Helper Functions ---
+
+        function formatNumber(num) {
+            if (num >= 1e15) return (num / 1e15).toFixed(1) + 'Q'; // Quadrillion
+            if (num >= 1e12) return (num / 1e12).toFixed(1) + 'T'; // Trillion
+            if (num >= 1e9) return (num / 1e9).toFixed(1) + 'B'; // Billion
+            if (num >= 1e6) return (num / 1e6).toFixed(1) + 'M'; // Million
+            if (num >= 1e3) return (num / 1e3).toFixed(1) + 'K'; // Thousand
+            return Math.floor(num);
+        }
+
+        function log(msg, type = 'normal') {
+            const div = document.createElement('div');
+            div.textContent = `> ${msg}`;
+            if (type === 'success') div.className = 'text-green-600 dark:text-green-400';
+            else if (type === 'fail') div.className = 'text-red-600 dark:text-red-400';
+            else if (type === 'gold') div.className = 'text-yellow-600 dark:text-yellow-400';
+            else div.className = 'text-gray-800 dark:text-gray-400';
+            
+            el.log.insertBefore(div, el.log.firstChild);
+            if (el.log.children.length > 50) el.log.lastChild.remove();
+        }
+
+        function showFloatingText(text, colorClass, x, y) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            div.className = `floating-text ${colorClass} text-2xl drop-shadow-md z-30`;
+            div.style.left = x + 'px';
+            div.style.top = y + 'px';
+            document.body.appendChild(div);
+            setTimeout(() => div.remove(), 1000);
+        }
+
+        function createParticles(x, y, color) {
+            for (let i = 0; i < 10; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                p.style.backgroundColor = color;
+                p.style.left = x + 'px';
+                p.style.top = y + 'px';
+                document.body.appendChild(p);
+
+                const angle = Math.random() * Math.PI * 2;
+                const velocity = Math.random() * 50 + 20;
+                const tx = Math.cos(angle) * velocity;
+                const ty = Math.sin(angle) * velocity;
+
+                p.animate([
+                    { transform: 'translate(0,0) scale(1)', opacity: 1 },
+                    { transform: `translate(${tx}px, ${ty}px) scale(0)`, opacity: 0 }
+                ], {
+                    duration: 500 + Math.random() * 300,
+                    easing: 'cubic-bezier(0, .9, .57, 1)',
+                    fill: 'forwards'
+                });
+
+                setTimeout(() => p.remove(), 800);
+            }
+        }
+
+        // --- Core Logic ---
+
+        function getCurrentConfig() {
+            return levelConfig[Math.min(state.level, levelConfig.length - 1)];
+        }
+
+        // 새로운 비용 계산 함수 (랜덤성 추가)
+        function randomizeCost() {
+            const power = getClickPower();
+            // 클릭당 골드의 7배 ~ 15배 사이 랜덤 비용 설정
+            const multiplier = 7 + Math.random() * 8; 
+            state.currentCost = Math.floor(power * multiplier);
+        }
+
+        function getNextCost() {
+            // 저장된 현재 비용 반환
+            return state.currentCost;
+        }
+
+        function getSellValue() {
+            const cfg = getCurrentConfig();
+            return Math.floor(BASE_SELL * cfg.valMult);
+        }
+
+        function getClickPower() {
+            const cfg = getCurrentConfig();
+            return Math.floor(BASE_POWER * cfg.valMult);
+        }
+
+        function updateUI() {
+            const cfg = getCurrentConfig();
+            
+            // Text Updates
+            el.gold.textContent = formatNumber(state.gold);
+            el.levelText.textContent = `+${state.level}`;
+            el.maxLevel.textContent = state.maxLevel;
+            el.swordName.textContent = cfg.name;
+            el.power.textContent = `${formatNumber(getClickPower())} G`;
+            el.sellPrice.textContent = `${formatNumber(getSellValue())} G`;
+            el.cost.textContent = formatNumber(getNextCost());
+            el.clickGold.textContent = formatNumber(getClickPower());
+            el.probSuccess.textContent = `${Math.floor(cfg.success * 100)}%`;
+
+            // Penalty Text
+            if (cfg.break > 0) {
+                el.failPenalty.textContent = `파괴 확률 ${Math.floor(cfg.break * 100)}% / 하락 ${Math.floor((1-cfg.break)*100)}%`;
+                el.failPenalty.className = "text-red-600 dark:text-red-500 font-extrabold";
+            } else if (cfg.drop > 0) {
+                el.failPenalty.textContent = "-1강 하락";
+                el.failPenalty.className = "text-orange-500 dark:text-orange-400 font-bold";
+            } else {
+                el.failPenalty.textContent = "안전 구간 (페널티 없음)";
+                el.failPenalty.className = "text-green-600 dark:text-green-400 font-bold";
+            }
+
+            // Visual Updates
+            el.swordSvg.className = `w-full h-full transition-all duration-500 glow-${cfg.tier}`;
+            const colors = tierColors[Math.min(cfg.tier, tierColors.length - 1)];
+            el.swordBlade.setAttribute("fill", colors.blade);
+            el.swordJewel.setAttribute("fill", colors.jewel);
+
+            // Button state
+            if (state.gold < getNextCost()) {
+                el.enhanceBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                el.enhanceBtn.classList.remove('hover:bg-indigo-500');
+            } else {
+                el.enhanceBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                el.enhanceBtn.classList.add('hover:bg-indigo-500');
+            }
+        }
+
+        function mine(e) {
+            const amount = getClickPower();
+            state.gold += amount;
+            playSound('coin');
+            
+            // Visuals
+            const rect = el.mineBtn.getBoundingClientRect();
+            // Randomize position slightly within button
+            const x = e.clientX || (rect.left + rect.width/2);
+            const y = e.clientY || (rect.top + rect.height/2);
+            
+            showFloatingText(`+${formatNumber(amount)}`, 'text-yellow-600 dark:text-yellow-300', x, y);
+            el.mineBtn.classList.add('pop-anim');
+            setTimeout(() => el.mineBtn.classList.remove('pop-anim'), 200);
+            
+            updateUI();
+        }
+
+        function enhance() {
+            const cost = getNextCost();
+            if (state.gold < cost) {
+                log("골드가 부족합니다!", "fail");
+                el.enhanceBtn.classList.add('shake-anim');
+                setTimeout(() => el.enhanceBtn.classList.remove('shake-anim'), 500);
+                return;
+            }
+
+            state.gold -= cost;
+            const cfg = getCurrentConfig();
+            const roll = Math.random();
+
+            // Animation start
+            el.swordContainer.classList.add('scale-110');
+            setTimeout(() => el.swordContainer.classList.remove('scale-110'), 200);
+
+            if (roll < cfg.success) {
+                // Success
+                state.level++;
+                if (state.level > state.maxLevel) state.maxLevel = state.level;
+                
+                // 레벨 변경 시 비용 재설정
+                randomizeCost();
+
+                playSound('success');
+                log(`강화 성공! (+${state.level})`, "success");
+                
+                const rect = el.swordContainer.getBoundingClientRect();
+                createParticles(rect.left + rect.width/2, rect.top + rect.height/2, '#4ade80');
+                showFloatingText("성공!", "text-green-600 dark:text-green-400", rect.left + rect.width/2, rect.top);
+                
+                el.msgArea.innerHTML = `<span class="text-green-600 dark:text-green-400 font-extrabold text-xl drop-shadow-md">강화 성공!</span>`;
+            } else {
+                // Fail
+                const subRoll = Math.random(); // Secondary roll for punishment
+                
+                if (cfg.break > 0 && subRoll < cfg.break) {
+                    // Destruction
+                    destroySword();
+                    return;
+                } else if (cfg.drop > 0) {
+                    // Downgrade
+                    state.level--;
+                    // 레벨 변경 시 비용 재설정
+                    randomizeCost();
+
+                    playSound('fail');
+                    log(`강화 실패... 등급 하락 (+${state.level})`, "fail");
+                    el.swordContainer.classList.add('shake-anim');
+                    setTimeout(() => el.swordContainer.classList.remove('shake-anim'), 500);
+                    
+                    el.msgArea.innerHTML = `<span class="text-orange-600 dark:text-orange-500 font-extrabold text-xl drop-shadow-md">강화 실패 (하락)</span>`;
+                } else {
+                    // Just Fail (레벨 유지 -> 비용 유지)
+                    playSound('fail');
+                    log("강화 실패... (변동 없음)", "fail");
+                    el.msgArea.innerHTML = `<span class="text-gray-500 dark:text-gray-400 font-extrabold text-xl drop-shadow-md">강화 실패</span>`;
+                }
+            }
+            
+            setTimeout(() => {
+                 el.msgArea.innerHTML = "";
+            }, 1000);
+
+            updateUI();
+        }
+
+        function destroySword() {
+            playSound('break');
+            // const scrapValue = Math.floor(getSellValue() * 0.1); // 기존 보상 로직 제거
+            
+            // 모든 돈을 0으로 초기화
+            state.gold = 0;
+            state.level = 0;
+            randomizeCost(); // 초기화 시 비용 재설정
+            
+            el.modal.classList.remove('hidden');
+            log(`팔로워가 파괴되어 전 재산을 날렸습니다!`, "fail");
+            createParticles(window.innerWidth/2, window.innerHeight/2, '#ef4444');
+            updateUI();
+        }
+
+        // 복구된 sellSword 함수
+        function sellSword() {
+            if (state.level === 0) {
+                log("코초딩보는 팔 수 없습니다.", "fail");
+                return;
+            }
+            
+            // Show custom modal instead of window.confirm
+            const value = getSellValue();
+            el.sellConfirmPrice.textContent = `${formatNumber(value)} G`;
+            el.sellModal.classList.remove('hidden');
+        }
+
+        function executeSell() {
+            const value = getSellValue();
+            state.gold += value;
+            state.level = 0;
+            randomizeCost(); // 초기화 시 비용 재설정
+            
+            playSound('coin');
+            log(`팔로워 판매 완료! +${formatNumber(value)}G`, "gold");
+            
+            el.sellModal.classList.add('hidden');
+            updateUI();
+        }
+
+        // --- Event Listeners ---
+        el.mineBtn.addEventListener('click', mine);
+        
+        el.enhanceBtn.addEventListener('click', () => {
+            if(!el.enhanceBtn.classList.contains('cursor-not-allowed')) {
+                enhance();
+            }
+        });
+
+        el.sellBtn.addEventListener('click', sellSword);
+
+        // New listeners for Sell Modal
+        el.sellConfirmBtn.addEventListener('click', executeSell);
+        el.sellCancelBtn.addEventListener('click', () => {
+            el.sellModal.classList.add('hidden');
+        });
+
+        el.restartBtn.addEventListener('click', () => {
+            el.modal.classList.add('hidden');
+            log("새로운 팔로워가 생겼습니다.");
+            updateUI();
+        });
+
+        // Keyboard Shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space') {
+                e.preventDefault(); // Prevent scroll
+                mine(e); // Pass event for coordinates fallback
+            }
+        });
+
+        // Init
+        randomizeCost(); // 초기 비용 설정
+        updateUI();
+
+    </script>
 </body>
 </html>
