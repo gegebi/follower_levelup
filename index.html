@@ -548,14 +548,18 @@
                 osc.start();
                 osc.stop(audioCtx.currentTime + 0.1);
             } else if (type === 'success') {
-                osc.type = 'triangle';
-                osc.frequency.setValueAtTime(400, audioCtx.currentTime);
-                osc.frequency.linearRampToValueAtTime(800, audioCtx.currentTime + 0.1);
-                osc.frequency.linearRampToValueAtTime(1200, audioCtx.currentTime + 0.2);
+                osc.type = 'sine'; // Cleaner, more "bell-like" tone
                 gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
-                gainNode.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.4);
+
+                // Play two quick rising notes, like a "power-up" sound
+                osc.frequency.setValueAtTime(880, audioCtx.currentTime); // A5
+                osc.frequency.linearRampToValueAtTime(1046.5, audioCtx.currentTime + 0.05); // C6
+                
+                // Fast decay
+                gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.2);
+
                 osc.start();
-                osc.stop(audioCtx.currentTime + 0.4);
+                osc.stop(audioCtx.currentTime + 0.2);
             } else if (type === 'fail') {
                 osc.type = 'sawtooth';
                 osc.frequency.setValueAtTime(150, audioCtx.currentTime);
